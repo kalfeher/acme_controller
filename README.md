@@ -1,7 +1,7 @@
 # acme_controller
 This role prepares a host to act as a central controller for the generation and validation of ACME (such as Let's Encrypt) based certificates.
 ## Staging URL is the default!!
-Note that to prevent unintended consequences, the Let's Encrypt staging URL is configured. It is strongly recommended that you do not edit the default var and instead explicitly set `ac_le_account_name` in your playbook or host var files.
+Note that to prevent unintended consequences, the Let's Encrypt staging URL is configured. It is strongly recommended that you do not edit the default var and instead explicitly set `ac_acme_api_uri` in your playbook or host var files.
 ## Required variables
 In addition to the target URL, it is recommended that you set the following variables:
 - `ac_le_account_name` There will be one account for all domains.
