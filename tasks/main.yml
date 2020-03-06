@@ -1,0 +1,39 @@
+---
+
+  - name: Set distribution specific vars
+    include_vars: "{{ item }}"
+    with_first_found:
+        - "{{ ansible_os_family }}.yml"
+        - "{{ ansible_distribution }}.yml"
+  - name: Install OS specific packages.
+    include_tasks: "{{ ansible_facts['os_family'] }}.yml"
+  - name: Add Private key folder
+    file:
+      path: "{{ac_priv_key_folder}}"
+      state: directory
+      owner: root
+      group: root
+      mode: 0750
+  - name: create private key for account if not exists
+    openssl_privatekey:
+      path: "{{ ac_priv_key_path }}"
+      type: ECC # Ed curves not supported by current cryptography pkg
+      curve: secp384r1
+      backup: yes
+
+  - name: Make sure account exists and has given contacts. We agree to TOS. Note that staging/Test URL is Default!!!!!
+    acme_account:
+      account_key_src: "{{ ac_priv_key_path }}"
+      state: present
+      terms_agreed: yes
+      acme_version: 2
+      acme_directory: "{{ac_acme_api_uri}}"
+      contact: "{{ac_contacts}}"
+    register: account_result
+
+  - name: Record Account details
+    template:
+      src: ac.fact.j2
+      dest: /etc/ansible/facts.d/ac.fact
+      backup: yes
+      mode: 0644

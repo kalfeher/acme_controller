@@ -1,0 +1,4 @@
+---
+  ac_packages:
+    - python3-cryptography
+    - python-dns

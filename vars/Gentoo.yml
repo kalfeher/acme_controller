@@ -1,0 +1,4 @@
+---
+  ac_packages:
+    - dev-python/cryptography
+    - dev-python/dnspython

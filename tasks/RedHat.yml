@@ -1,0 +1,5 @@
+---
+  - name: Install required packages 
+    yum:
+      name: "{{ ac_packages }}"
+      state: latest

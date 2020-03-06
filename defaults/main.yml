@@ -1,0 +1,10 @@
+---
+      ac_packages:
+        - python3-cryptography #avoid insecurities with openssl and writing to temp files -> https://docs.ansible.com/ansible/latest/modules/acme_account_module.html
+      ac_working_dir: "/etc/acme_controller"
+      ac_priv_key_folder: "{{ac_working_dir}}/cert/private"
+      ac_le_account_name: "test-example-info-acct"
+      ac_priv_key_path: "{{ ac_priv_key_folder }}/{{ac_le_account_name}}-account.key"
+      ac_acme_api_uri: "https://acme-staging-v02.api.letsencrypt.org/directory" # staging URI
+      ac_contacts:
+        - mailto:root@example.info
