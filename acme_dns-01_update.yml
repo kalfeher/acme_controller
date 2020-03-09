@@ -9,10 +9,5 @@
       type: "TXT"
       value: "{{item.value | first}}"
       ttl: "60" # seconds
-    #when: (dns_update_details.[domain.name].host|default(dns_update_details.['default'].host) == 'localhost'  #ac_dnsupdate_host == 'localhost'
     loop: "{{challenge.challenge_data_dns | dict2items }}" #ansible acme example uses dictsort, with invalid referencing
     register: zone_update
-
-
-
-    # If successful, write record into facts file
