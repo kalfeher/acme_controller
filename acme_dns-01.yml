@@ -12,11 +12,9 @@
       acme_version: 2
     register: challenge
 
-
   - name: Update DNS if changed
     include_tasks: acme_dns-01_update.yml
     when: challenge is changed
-
 
   - name: Check for cert if changed. Fetch if DNS published
     include_tasks: acme_dns-01_fetch.yml
