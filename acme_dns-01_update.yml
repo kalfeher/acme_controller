@@ -1,30 +1,18 @@
 ---
-  - name: Update DNS via localhost
+  - name: Update DNS via nsupdate
     nsupdate:
-      key_name: "{{ac_dns_tsig_name }}"
-      key_secret: "{{ac_dns_tsig_key}}"
-      key_algorithm: "{{ac_dns_tsig_algo}}"
-      server: "localhost"
+      key_name: "{{ dns_update_details[domain.name].tsig_name|default(dns_update_details['default'].tsig_name) }}"
+      key_secret: "{{ dns_update_details[domain.name].tsig_key|default(dns_update_details['default'].tsig_key) }}"
+      key_algorithm: "{{ dns_update_details[domain.name].tsig_algo|default(dns_update_details['default'].tsig_algo) }}"
+      server: "{{ dns_update_details[domain.name].host|default(dns_update_details['default'].host) }}"
       record: "{{item.key}}."
       type: "TXT"
       value: "{{item.value | first}}"
       ttl: "60" # seconds
-    when: ac_dnsupdate_host == 'localhost'
+    #when: (dns_update_details.[domain.name].host|default(dns_update_details.['default'].host) == 'localhost'  #ac_dnsupdate_host == 'localhost'
     loop: "{{challenge.challenge_data_dns | dict2items }}" #ansible acme example uses dictsort, with invalid referencing
     register: zone_update
 
-  - name: Update via remote NSUPDATE
-    nsupdate:
-      key_name: "{{ac_dns_tsig_name }}"
-      key_secret: "{{ac_dns_tsig_key}}"
-      key_algorithm: "{{ac_dns_tsig_algo}}"
-      server: "localhost"
-      record: "{{item.key}}."
-      type: "TXT"
-      value: "{{item.value | first}}"
-      ttl: "60" # seconds
-    when: ac_dnsupdate_host != 'localhost'
-    loop: "{{challenge.challenge_data_dns | dict2items }}" #ansible acme example uses dictsort, with invalid referencing
-    register: zone_update
+
 
     # If successful, write record into facts file

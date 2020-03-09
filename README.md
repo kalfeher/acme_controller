@@ -12,7 +12,10 @@ The `acme_run.yml` and `acme_dns-01*.yml` playbooks are provided to allow you to
 The playbook conducts the following steps for each domain you list in `ac_domains`:
 1. Generate a CSR for all your domains. Optionally, per domain, you can force a CSR to be generated even if one exists by setting `new_key="True"` within the list item of `ac_domains `.
 2. If no certificate is present, then an ACME challenge is generated.
-3. The challenge is added to a DNS server. The variables: `ac_dnsupdate_host`, `ac_dns_tsig_name`, `ac_dns_tsig_key` and `ac_dns_tsig_algo` need to be set in order for the playbook to successfully submit an nsupdate.
-4. The playbook will test an external DNS server at random (from the list `recursive_DNS`) to check if the new challenge is visible externally.
-   a. This accounts for situations where DNS updates are made to a hidden primary server and propogated at a slow pace to the hosts which actually respond to DNS queries.
+3. The challenge is added to a DNS server. The variable `dns_update_details` is a dictionary of labels for which nsupdate details are provided. If a label is not listed, the `'default'` dictionary will be used. If all your domains are hosted by the same primary server, then you only need to define the values for `'default'`.
+4. The playbook will test an external DNS server at random (from the list `recursive_DNS`) to check if the new challenge is visible externally. **IPv6 are commented out deliberately**
+   a. This accounts for situations where DNS updates are made to a hidden primary server and propagated at a slow pace to the hosts which actually respond to DNS queries.
 5. Once the challenge record is visible externally, the playbook will fetch the certificate.
+
+### Known issues
+The _lookup_ plugin _dig_ does not support the IPv6 addresses in the recursive_DNS list. Once this issue is resolved, the list will be updated to include known public IPv6 recursive servers.

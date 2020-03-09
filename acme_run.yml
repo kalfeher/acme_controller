@@ -8,19 +8,18 @@
     # External DNS service check naturally requires access outbound. Replace list with external forwarders if outbound DNS query access is limited.
     recursive_DNS:
       - "@8.8.8.8" # Google
-      - "@2001:4860:4860::8888" # Google
+      #- "@2001:4860:4860::8888" # Google
       - "@1.1.1.1" # Cloudflare
-      - "@2606:4700:4700::1111" # Cloudflare
+      #- "@2606:4700:4700::1111" # Cloudflare
       - "@9.9.9.9" # Quad9
-      - "@2620:fe::fe" # Quad9
+      #- "@2620:fe::fe" # Quad9
       - "@156.154.70.5" # Neustar
-      - "@2610:a1:1018::5" # Neustar
+      #- "@2610:a1:1018::5" # Neustar
     ac_domains:
       - { name: example.cloud, new_key: "false", org: "Example LTD", country: "au" }
-    ac_dnsupdate_host: "localhost" # or ip address/domain
-    ac_dns_tsig_name: "local-ddns"
-    ac_dns_tsig_key: "1234567890lkjhgfdsa"
-    ac_dns_tsig_algo: "hmac-sha256"
+    dns_update_details:
+      'default': {host: 'localhost', tsig_name: 'local-ddns', tsig_key: "K12345", tsig_algo: "hmac-sha256"}
+      'example.cloud': {host: '10.10.10.10', tsig_name: 'myprovider', tsig_key: "K6789", tsig_algo: "hmac-sha256"}
   tasks:
     - name: Generate Private keys and CSRs for each domain
       include_tasks: generate_priv_key.yml
