@@ -12,5 +12,5 @@
       remaining_days: "{{renew_days_before_expiry}}"
       acme_version: 2
       data: "{{challenge}}"
-    when: (True if item.value[0] == lookup('dig', item.key +'.', 'qtype=TXT', recursive_DNS|random) else False)
+    when: (True if item.value[0] == lookup('dig', item.key +'.', 'qtype=TXT', 'name_server='+ recursive_DNS|random) else False)
     loop: "{{challenge.challenge_data_dns | dict2items }}"
