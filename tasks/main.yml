@@ -37,3 +37,6 @@
       dest: /etc/ansible/facts.d/ac.fact
       backup: yes
       mode: 0644
+
+  - name: Generate Private keys, CSRs and process ACME request.
+    include_tasks: acme_run.yml

@@ -8,3 +8,8 @@
       ac_acme_api_uri: "https://acme-staging-v02.api.letsencrypt.org/directory" # staging URI
       ac_contacts:
         - mailto:root@example.info
+      ac_domains:
+        - { name: example.cloud, new_key: "false", org: "Example LTD", country: "au" }
+      dns_update_details:
+        'default': {host: 'localhost', tsig_name: 'local-ddns', tsig_key: "K12345", tsig_algo: "hmac-sha256"}
+        'example.cloud': {host: '10.10.10.10', tsig_name: 'myprovider', tsig_key: "K6789", tsig_algo: "hmac-sha256"}

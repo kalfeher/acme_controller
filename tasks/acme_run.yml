@@ -1,0 +1,13 @@
+---
+  - name: Generate Private keys and CSRs for each domain
+    include_tasks: generate_priv_key.yml
+    loop: "{{ ac_domains }}"
+    loop_control:
+      loop_var: domain
+
+
+  - name: Register challenges and fetch certs for each domain
+    include_tasks: acme_dns-01.yml
+    loop: "{{ ac_domains }}"
+    loop_control:
+      loop_var: domain

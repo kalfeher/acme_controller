@@ -1,0 +1,36 @@
+---
+  - name: Create per domain working folder
+    file:
+      path: "{{ ac_working_dir }}/{{domain.name}}/priv/"
+      state: directory
+      owner: root
+      group: root
+      mode: 0750
+
+  - name: Add subdir for certificates
+    file:
+      path: "{{ ac_working_dir }}/{{domain.name}}/certs/"
+      state: directory
+      owner: root
+      group: root
+      mode: 0750
+
+  - name: Create Private key, over-write if 'new_key:true'
+    openssl_privatekey:
+      path: "{{ ac_working_dir }}/{{domain.name}}/priv/private.key"
+      type: ECC # Ed curves not supported by current cryptography pkg
+      curve: secp384r1
+      backup: yes
+      force: "{{ 'yes' if domain.new_key == 'true' else 'no' }}"
+    register: "priv_key"
+  #- debug:
+  #    msg: "{{ priv_key.filename }}"
+  - name: Generate CSRs
+    openssl_csr:
+      path: "{{ ac_working_dir }}/{{domain.name}}/{{domain.name}}.csr"
+      privatekey_path: "{{ priv_key.filename }}"
+      common_name: "{{ domain.name }}"
+      organization_name: "{{ domain.org }}"
+      country_name: "{{ domain.country }}"
+      force: "{{ 'yes' if domain.new_key == 'true' else 'no' }}"
+      backup: yes
