@@ -11,8 +11,8 @@
     file:
       path: "{{ac_priv_key_folder}}"
       state: directory
-      owner: root
-      group: root
+      owner: "{{ac_user}}"
+      group: "{{ac_group}}"
       mode: 0750
   - name: create private key for account if not exists
     openssl_privatekey:

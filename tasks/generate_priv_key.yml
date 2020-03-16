@@ -3,16 +3,16 @@
     file:
       path: "{{ ac_working_dir }}/{{domain.name}}/priv/"
       state: directory
-      owner: root
-      group: root
+      owner: "{{ac_user}}"
+      group: "{{ac_group}}"
       mode: 0750
 
   - name: Add subdir for certificates
     file:
       path: "{{ ac_working_dir }}/{{domain.name}}/certs/"
       state: directory
-      owner: root
-      group: root
+      owner: "{{ac_user}}"
+      group: "{{ac_group}}"
       mode: 0750
 
   - name: Create Private key, over-write if 'new_key:true'
@@ -23,8 +23,7 @@
       backup: yes
       force: "{{ 'yes' if domain.new_key == 'true' else 'no' }}"
     register: "priv_key"
-  #- debug:
-  #    msg: "{{ priv_key.filename }}"
+
   - name: Generate CSRs
     openssl_csr:
       path: "{{ ac_working_dir }}/{{domain.name}}/{{domain.name}}.csr"
