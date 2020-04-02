@@ -16,3 +16,4 @@
       ac_user: "{{ansible_user}}"
       ac_group: "{{ansible_user}}"
       ac_acme_host_grp: "acme_hosts"
+      renew_days_before_expiry: 30

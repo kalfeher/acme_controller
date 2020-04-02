@@ -11,3 +11,6 @@
     loop: "{{ ac_domains }}"
     loop_control:
       loop_var: domain
+    tags:
+      - fetch
+      - forcefetch

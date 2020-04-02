@@ -1,6 +1,6 @@
 ---
   - name: Install required packages
-    become: yes
+    become: yes 
     yum:
       name: "{{ ac_packages }}"
       state: latest

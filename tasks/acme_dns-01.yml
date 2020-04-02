@@ -6,16 +6,26 @@
       src: "{{ ac_working_dir }}/{{domain.name}}/{{domain.name}}.csr"
       cert: "{{ ac_working_dir }}/{{domain.name}}/certs/{{domain.name}}.crt"
       chain: "{{ ac_working_dir }}/{{domain.name}}/certs/chain.crt"
+      fullchain: "{{ ac_working_dir }}/{{domain.name}}/certs/{{domain.name}}.fullchain"
       challenge: dns-01
       acme_directory: "{{ac_acme_api_uri}}"
       remaining_days: "{{renew_days_before_expiry}}"
       acme_version: 2
+      force: "{{ac_renew_force}}"
     register: challenge
+    tags:
+      - forcefetch
+      - fetch
+  - debug:
+      msg: "{{challenge}}"
 
   - name: Update DNS if changed
     include_tasks: acme_dns-01_update.yml
     when: challenge is changed
-
+    tags:
+      - forcefetch
+      - fetch
   - name: Check for cert if changed. Fetch if DNS published
     include_tasks: acme_dns-01_fetch.yml
     when: challenge is changed
+    tags: fetch

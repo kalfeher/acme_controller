@@ -14,6 +14,12 @@
       owner: "{{ac_user}}"
       group: "{{ac_group}}"
       mode: 0750
+  - name: Override new_key value only if local fact is yes
+    set_fact:
+      domain.new_key: yes
+    when:
+      - ansible_local['ac'][domain.name]['newkey'] is defined
+      - ansible_local['ac'][domain.name]['newkey'] == 'yes'
 
   - name: Create Private key, over-write if 'new_key:true'
     openssl_privatekey:
@@ -21,7 +27,7 @@
       type: ECC # Ed curves not supported by current cryptography pkg
       curve: secp384r1
       backup: yes
-      force: "{{ 'yes' if domain.new_key == 'true' else 'no' }}"
+      force: "{{domain.new_key}}"
     register: "priv_key"
 
   - name: Generate CSRs
@@ -31,5 +37,5 @@
       common_name: "{{ domain.name }}"
       organization_name: "{{ domain.org }}"
       country_name: "{{ domain.country }}"
-      force: "{{ 'yes' if domain.new_key == 'true' else 'no' }}"
+      force: "{{domain.new_key}}"
       backup: yes
