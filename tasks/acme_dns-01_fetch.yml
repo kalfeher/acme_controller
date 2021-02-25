@@ -33,4 +33,4 @@
           option: "URI"
           value: "{{fetch_result.results.order_uri}}"
           backup: yes
-    when: (True if fetch_result.results.order_uri is defined else False)
+    when: (True if fetch_result.results[0]['order_uri'] is defined else False)

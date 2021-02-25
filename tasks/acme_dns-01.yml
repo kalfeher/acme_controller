@@ -18,7 +18,6 @@
       - fetch
   - debug:
       msg: "{{challenge}}"
-
   - name: Update DNS if changed
     include_tasks: acme_dns-01_update.yml
     when: challenge is changed
