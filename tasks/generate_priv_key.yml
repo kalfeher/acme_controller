@@ -26,6 +26,8 @@
       path: "{{ ac_working_dir }}/{{domain.name}}/priv/private.key"
       type: ECC # Ed curves not supported by current cryptography pkg
       curve: secp384r1
+      owner: "{{ac_user}}"
+      group: "{{ac_group}}"
       backup: yes
       force: "{{domain.new_key}}"
     register: "priv_key"

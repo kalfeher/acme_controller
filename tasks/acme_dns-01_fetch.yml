@@ -33,4 +33,15 @@
           option: "URI"
           value: "{{fetch_result.results.order_uri}}"
           backup: yes
+      - name: Change owner and group of retrieved files
+        file:
+          path: "{{item}}"
+          owner: "{{ac_user}}"
+          group: "{{ac_group}}"
+        loop:
+          - "{{ ac_working_dir }}/{{domain.name}}/{{domain.name}}.csr"
+          - "{{ ac_working_dir }}/{{domain.name}}/certs/{{domain.name}}.crt"
+          - "{{ ac_working_dir }}/{{domain.name}}/certs/chain.crt"
+          - "{{ ac_working_dir }}/{{domain.name}}/certs/{{domain.name}}.fullchain"
+
     when: (True if fetch_result.results[0]['order_uri'] is defined else False)
