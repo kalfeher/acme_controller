@@ -44,4 +44,4 @@
           - "{{ ac_working_dir }}/{{domain.name}}/certs/chain.crt"
           - "{{ ac_working_dir }}/{{domain.name}}/certs/{{domain.name}}.fullchain"
 
-    when: (True if fetch_result.results[0]['order_uri'] is defined else False)
+    when: (True if fetch_result.results[0].order_uri is defined else False)
