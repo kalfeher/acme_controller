@@ -31,7 +31,7 @@
           path: /etc/ansible/facts.d/ac.fact
           section: "[{{domain.name}}]"
           option: "URI"
-          value: "{{fetch_result.results.order_uri}}"
+          value: "{{fetch_result.results[0].order_uri}}"
           backup: yes
       - name: Change owner and group of retrieved files
         file:
